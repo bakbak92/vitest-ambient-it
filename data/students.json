@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "name": "John",
+            "age": 20,
+            "email": "john@example.com",
+            "grade": 8
+        },
+        {
+            "name": "Jane",
+            "age": 21,
+            "email": "jane@example.com",
+            "grade": 6
+        },
+        {
+            "name": "Jim",
+            "age": 22,
+            "email": "jim@example.com",
+            "grade": 10
+        },
+        {
+            "name": "Bakary",
+            "age": 23,
+            "email": "bakary@example.com",
+            "grade": 7
+        }
+    ]
+}
