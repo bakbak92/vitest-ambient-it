@@ -1,18 +1,14 @@
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <title>Formation vitest</title>
+    <title>Todos</title>
 </head>
-<body>
-    <h1>Formation vitest</h1>
-    <h2>Liste d'étudients</h2>
-    <div id="students" class="flex flex-row flex-wrap gap-4"></div>
-    <div id="student">
-
-    </div>
-    <script src="app/index.js" type="module"></script>
+<body class="max-w-screen-md my-16 mx-auto border-2 border-gray-300 rounded-md p-8">
+    <h1 class="text-2xl font-bold text-center">Todos</h1>
+    <div id="app" class="p-8"></div>
+    <script src="./app/pagetoto.js" type="module"></script>
 </body>
 </html>
