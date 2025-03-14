@@ -5,24 +5,75 @@ async function fetchTodos() {
     const response = await axios.get('http://localhost:3000/todos')
     return response.data
 }
+async function deleteTodo(id) {
+    const response = await axios.delete(`http://localhost:3000/todos/${id}`)
+    return response.data
+}
 
-function renderTodos(todos) {
-    const todosListHtml = todos.map(todo => `<li id="${todo.id}">${todo.title}</li>`).join('')
-    return todosListHtml
+function removeTodo(id, container) {
+    const todoItem = container.querySelector(`li[id="${id}"]`);
+    if (todoItem) {
+        todoItem.remove();
+    }
+}
+
+async function updateTodo(id, todo) {
+    const response = await axios.put(`http://localhost:3000/todos/${id}`, todo)
+    return response.data
+}
+
+function toggleTodo(element, todo) {
+    if(todo.completed) {
+        element.classList.add('line-through')
+    } else {
+        element.classList.remove('line-through')
+    }
+}
+
+function buildTodoItem(todo, container) {
+    const item = document.createElement('li')
+        item.classList.add('flex', 'justify-between', 'items-center')
+        item.id = todo.id
+        const span = document.createElement('span')
+        span.textContent = todo.title
+        if(todo.completed) {
+            span.classList.add('line-through')
+        }
+        span.addEventListener('click', async () => {
+            todo.completed = !todo.completed
+            toggleTodo(span, todo)
+            await updateTodo(todo.id, todo)
+        })
+        item.appendChild(span)
+        const button = document.createElement('button')
+        button.textContent = 'X'
+        button.classList.add('bg-red-500', 'text-white', 'p-2', 'rounded-md')
+        button.addEventListener('click', async () => {
+            removeTodo(todo.id, container)
+            await deleteTodo(todo.id)
+        })
+        item.appendChild(button)
+        return item
+}
+
+function renderTodos(todos, container) {
+    const items = todos.map(todo => {
+        return buildTodoItem(todo, container)
+    })
+
+    return items
 }
 
 async function postTodo(title) {
-    const response = await fetch('http://localhost:3000/todos', {
-        method: 'POST',
-        body: JSON.stringify({ title, completed: false })
+    const response = await axios.post('http://localhost:3000/todos', {
+        title,
+        completed: false
     })
-    return response.json()
+    return response.data
 }
 
-function addTodo(title, container) {
-    todos.push({ id: todos.length + 1, title, completed: false })
-    const todoItem = document.createElement('li')
-    todoItem.textContent = title
+function addTodo(newTodo, container) {
+    const todoItem = buildTodoItem(newTodo, container)
     container.appendChild(todoItem)
 }
 
@@ -55,9 +106,12 @@ async function renderContainerTodo() {
     // 📋 Liste des todos
     const ul = document.createElement('ul')
     ul.id = 'todos'
-    ul.classList.add('list-none', 'flex', 'flex-col', 'gap-2')
-    ul.innerHTML = renderTodos(todos)
+    ul.classList.add('list-none', 'flex', 'flex-col', 'gap-5')
+    const items = renderTodos(todos, containerTodoList)
+    items.forEach(item => ul.appendChild(item))
     containerTodoList.appendChild(ul)
+
+
 
     // ✅ Attacher les événements au formulaire
     form.addEventListener('submit', async (event) => {
@@ -67,7 +121,7 @@ async function renderContainerTodo() {
 
         const newTodo = await postTodo(title)
         if (newTodo) {
-            addTodo(newTodo.title, ul) // Ajoute dynamiquement le todo dans la liste
+            addTodo(newTodo, ul) // Ajoute dynamiquement le todo dans la liste
             input.value = '' // Réinitialise l'input
         }
     })
@@ -78,4 +132,4 @@ async function renderContainerTodo() {
 
 
 
-export { fetchTodos, renderTodos, renderContainerTodo, addTodo, postTodo }
+export { fetchTodos, renderTodos, renderContainerTodo, addTodo, postTodo, removeTodo, toggleTodo }
