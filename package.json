@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "server": "json-server --watch db.json --port 3000",
+    "start": "live-server --port=5500 --ignore=**/db.json"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
     "jsdom": "^26.0.0",
+    "json-server": "^1.0.0-beta.3",
+    "live-server": "^1.2.2",
     "vitest": "^3.0.8"
   },
   "dependencies": {
